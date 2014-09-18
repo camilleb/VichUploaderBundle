@@ -94,7 +94,10 @@ class VichFileType extends AbstractType
         $view->vars['object'] = $form->getParent()->getData();
 
         if ($options['download_link'] && $view->vars['object']) {
-            $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $options['mapping']);
+            //--- Add download_uri only if file exist
+            if (file_exists($this->storage->resolvePath($view->vars['object'], $options['mapping']))) {
+                $view->vars['download_uri'] = $this->storage->resolveUri($form->getParent()->getData(), $options['mapping']);
+            }
         }
     }
 
